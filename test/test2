@@ -1,0 +1,5 @@
+(S . (T . (W . (Z . NIL))))
+((A . (B . NIL)) . (C . NIL))
+(A . (B . ((C . (D . NIL)) . NIL)))
+((A . NIL) . NIL)
+(A . ((B . C) . NIL))
