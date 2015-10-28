@@ -1,21 +1,27 @@
 
 public class Printer {
-	
-	public static void print() {
+	public static void prints() {	
 		for(Node root : Parser.getRootList()) {
-			if(root.isList)
-				printList(root);
-			else
-				printNode(root);
+			print(root);
 			System.out.println("");
 		}
+	}
+	
+	public static void print(Node root) {	
+		Parser.checkRootIsList(root); // Check root is list or not before print
+		if(root.isList) 
+			printList(root);
+		else
+			printNode(root);
 	}
 	
 	public static void printList(Node node) {
 		if(node == null)
 			return;
-		if(node.atom != null)
+		if(node.atom != null) {
+			System.out.print("");
 			System.out.print(node.atom.getContent());
+	}
 		else {
 			System.out.print("(");
 			printList(node.leftChild);

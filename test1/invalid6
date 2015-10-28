@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Not Found</title>
+<style type="text/css" media="all">
+<!--
+@import url(/styles/style.css);
+-->
+</style>
+
+</head>
+<body>
+<p>&nbsp;</p><p></p>
+<p></p>
+<div align="center">
+<h1> Page Not Found</h1>
+</div>
+<ul>
+  <p align="center"> <font size="3">The document you requested could not be found 
+    on this server. </font> 
+  <p align="center"><font size="3">Either it has been removed from the server 
+    or, perhaps, the URL you've used is invalid or </font><font size="3"> temporarily 
+    unavailable.</font></p>
+  <p align="center"><font size="3">If you have any questions or comments, please 
+    contact <a href="mailto:webmaster@cse.ohio-state.edu">webmaster</a></font></p>
+  <p align="center"><font size="3">Click the image below to go back to the Department 
+    of Computer Science and Engineering Homepage</font></p>
+  <p align="center"><a target="_self" href="http://www.cse.ohio-state.edu"><img
+	src="/images/cse_logo_missing.jpg" alt="CSE Logo" width="461" height="141" border="1"></a></p>
+</ul>
+</body>
+</html>

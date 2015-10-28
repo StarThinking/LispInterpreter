@@ -5,13 +5,14 @@ public class Interpreter {
 		try {
 			Analyzer.getStringFromFile();
 			Parser.ParseStart();
-			Parser.checkInnerNodeIsList();
-			Parser.checkRootIsList();
-			Printer.print();
+			//Printer.prints();
+			Eval.evals(Parser.getRootList());
 		} 
-		catch (ListException e) {
-			System.out.println("ERROR: " + e.getMessage());
+		catch (Exception e) {
+			if(e instanceof ListException)
+				System.out.println("ERROR: " + e.getMessage());
+			else
+				System.out.println("ERROR: Function fails!");
 		}
 	}
-
 }

@@ -1,0 +1,5 @@
+(S T W Z)
+((A B) C)
+(A B (C D))
+((A))
+(A . ((B . C) . NIL))

@@ -5,6 +5,7 @@ public class Parser {
 	
 	private static List<Node> rootList = new ArrayList<Node>(); 
 	private static int currentRoot = 0;
+	private static boolean nodeFound;
 	
 	public static List<Node> getRootList() {
 		return rootList;
@@ -43,17 +44,20 @@ public class Parser {
 			throw(new ListException("ClosingParenthesis is expected!"));
 	}
 	
-	public static void checkInnerNodeIsList() {
-		for(Node root : rootList) {
-			travelForInnerNode(root);
-		}
+	public static void checkRootIsList(Node root) {
+		travelForInnerNode(root);
+		nodeFound = false;
+		travelForRoot(root);
+		if(!nodeFound)
+			root.isList = true;
 	}
-	
+
 	private static void checkInnerNode(Node node) {
 		  if (node == null) 
 			  return;   
-		  if(node.atom != null)
-			  ;
+		  if(node.atom != null) {
+			  return;
+		  }
 		  else {
 			  // check if the inner node is list
 			  Node tmp = node;
@@ -68,7 +72,7 @@ public class Parser {
 				  }
 				  else 
 					  tmp = tmp.rightChild;
-			  }		
+			  }	
 		  }
 	}
 	
@@ -82,20 +86,14 @@ public class Parser {
 	     }  
 	}
 	
-	public static void checkRootIsList() {
-		for(Node root : rootList) {
-			root.isList = true;
-			travelForRoot(root);
-			 currentRoot ++;
-		}
-	}
-	
 	private static void checkRootNode(Node node) {
 		  if (node == null) 
 			  return;   
 		  if(node.atom == null) {
-			  if(!node.isList)
+			  if(!node.isList) {
 				  rootList.get(currentRoot).isList = false;
+				  nodeFound = true;
+			  }
 		  }   
 	}
 	
@@ -108,5 +106,5 @@ public class Parser {
 	    	 travelForRoot(node.rightChild);  
 	     }  
 	}
-
+	
 }
