@@ -45,6 +45,13 @@ public class Parser {
 	}
 	
 	public static void checkRootIsList(Node root) {
+		if(root.leftChild == null && root.rightChild == null) {
+			if(root.atom.getContent().equals("NIL")) 
+				root.isList = true;
+			else 
+				root.isList = false;
+			return;
+		}
 		travelForInnerNode(root);
 		nodeFound = false;
 		travelForRoot(root);

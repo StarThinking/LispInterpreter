@@ -1,0 +1,1 @@
+(PLUS . ((TIMES . ((QUOTIENT . (44 . (8 . NIL))) . (8 . NIL))) . ((REMAINDER . (44 . ((PLUS . (3 . (5 . NIL))) . NIL))) . NIL)))

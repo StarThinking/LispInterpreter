@@ -11,8 +11,10 @@ public class Interpreter {
 		catch (Exception e) {
 			if(e instanceof ListException)
 				System.out.println("ERROR: " + e.getMessage());
-			else
+			else {
 				System.out.println("ERROR: Function fails!");
+				//System.out.println(e);
+			}
 		}
 	}
 }

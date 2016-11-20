@@ -1,0 +1,2 @@
+(DEFUN . (A . ((X . (Y . NIL)) . ((PLUS . (X . (Y . NIL))) . NIL))))
+(A . (1 . NIL))

@@ -1,12 +1,16 @@
 Sixiang Ma	500065641	ma.1189@osu.edu
 
 Additional details:
-The program is implemented according to the instruction. Build it by using ‘make’, and run it by using ‘java Interpreter < inputfile > outputfile’.
+The program is implemented according to the instruction. Build the source code by commanding ‘make’. Run it by commanding ‘java Interpreter < inputfile > outputfile’
 
 Design information:
-The system is mainly composed of three components: Analyzer, Parser and Printer. Analyzer is responsible for reading characters from stdin and providing Tokens to Parser when it needs. Parse is responsible for building a binary tree which captures the structure of an S-expression. Printer is responsible for printing out binary trees.
+The system is mainly composed of three components: Analyzer, Parser and Printer. Analyzer is responsible for reading characters from stdin and providing Tokens to Parser when it asks. Parser is responsible for building binary trees that capture the structure of an S-expression. Printer is responsible for printing out binary tress.
 
-Regarding a binary tree, each node of the tree is a Node which itself can have two child Nodes. For the leaves of the tree, these nodes will contain Tokens which are Atoms. In addition, each node contains a variable named isList to distinguish whether the tree is a node or a list. A tree can be considered as a list, only when all of its inner nodes are lists. Otherwise, it will be a node. The output behaviors differ between nodes and lists.
+Regarding the binary tree, each node of trees is a Node which can have two child Nodes. For leaves of trees, these nodes will contain atoms. Also, each node will have a variable named isList to mark whether this node is a list or not. If all of the inner nodes of a binary tress are lists, then this tree is considered as a list. Otherwise, the binary tree will be considered as a node. The output of binary trees differ between lists or nodes.
 
 
-Thanks for reading this file. For any questions, you could send me an email.
+
+For any questions, you can send me an email. 
+Thanks for reading this file.
+  
+

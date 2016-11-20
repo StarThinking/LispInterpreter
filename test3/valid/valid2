@@ -1,0 +1,4 @@
+(DEFUN . (FIB . ((N.NIL) . ((COND . (((EQ . (N . (1 . NIL))) . (1 . NIL)) . (((EQ . (N . (2 . NIL))) . (1 . NIL)) . ((T . ((PLUS . ((FIB . ((MINUS . (N . (1 . NIL))) . NIL)) . ((FIB . ((MINUS . (N . (2 . NIL))) . NIL)) . NIL))) . NIL)) . NIL)))) . NIL))))
+(FIB . (2 . NIL))
+(FIB . (5 . NIL))
+(FIB . (13. NIL))

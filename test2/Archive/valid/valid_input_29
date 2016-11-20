@@ -1,0 +1,1 @@
+(COND . (((GREATER . (5 . (5 . NIL))) . ((QUOTE . (GR . NIL)) . NIL)) . (((LESS . (5 . (5 . NIL))) . ((QUOTE . (LS . NIL)) . NIL)) . (((EQ . (5 . (5 . NIL))) . ((QUOTE . (EQ . NIL)) . NIL)) . NIL))))

@@ -1,0 +1,27 @@
+for file in ./*
+do
+	cat $file >> ValidTests 
+done
+(DEFUN . (f . ((x . NIL) . ((PLUS . (x . (y . NIL))) . NIL))))
+(DEFUN . (g . ((y . NIL) . ((f . (10 . NIL)) . NIL))))
+(DEFUN . (h . ((y . NIL) . ((f . (20 . NIL)) . NIL))))
+(g . (5 . NIL))
+(h . (5 . NIL))
+(g . ((h . (5 . NIL)) . NIL))
+(DEFUN . (FIB . ((N.NIL) . ((COND . (((EQ . (N . (1 . NIL))) . (1 . NIL)) . (((EQ . (N . (2 . NIL))) . (1 . NIL)) . ((T . ((PLUS . ((FIB . ((MINUS . (N . (1 . NIL))) . NIL)) . ((FIB . ((MINUS . (N . (2 . NIL))) . NIL)) . NIL))) . NIL)) . NIL)))) . NIL))))
+(FIB . (2 . NIL))
+(FIB . (5 . NIL))
+(FIB . (13. NIL))
+(DEFUN . (MEM . ((X . (LIST . NIL)) . ((COND . (((NULL . (LIST . NIL)) . (NIL . NIL)) . ((T . ((COND . (((EQ . (X . ((CAR . (LIST . NIL)) . NIL))) . (T . NIL)) . ((T . ((MEM . (X . ((CDR . (LIST . NIL)) . NIL))) . NIL)) . NIL))) . NIL)) . NIL))) . NIL))))
+(MEM . (1 . ((QUOTE . ((1 . (2 . NIL)) . NIL)) . NIL)))
+(MEM . (3 . ((QUOTE . ((1 . (2 . NIL)) . NIL)) . NIL)))
+(MEM . (3 . ((QUOTE . (NIL . NIL)) . NIL)))
+(DEFUN . (UNI . ((S1 . (S2 . NIL)) . ((COND . (((NULL . (S1 . NIL)) . (S2 . NIL)) . (((NULL . (S2 . NIL)) . (S1 . NIL)) . ((T . ((COND . (((MEM . ((CAR . (S1 . NIL)) . (S2 . NIL))) . ((UNI . ((CDR . (S1 . NIL)) . (S2 . NIL))) . NIL)) . ((T . ((CONS . ((CAR . (S1 . NIL)) . ((UNI . ((CDR . (S1 . NIL)) . (S2 . NIL))) . NIL))) . NIL)) . NIL))) . NIL)) . NIL)))) . NIL))))
+(UNI . ((QUOTE . ((1 . (2 . NIL)) . NIL)) . ((QUOTE . ((2 . (3 . NIL)) . NIL)) . NIL)))
+(DEFUN . (A . (NIL . ((PLUS . (2 . (3 . NIL))) . NIL))))
+(A . NIL)
+(DEFUN . (ID . ((N.NIL) . (N . NIL))))
+(ID . (5 . NIL))
+(ID . (4532 . NIL))
+(DEFUN . (F . (NIL . (NIL . NIL))))
+(F . NIL)

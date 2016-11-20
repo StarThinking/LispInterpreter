@@ -21,7 +21,7 @@ public class Printer {
 		if(node.atom != null) {
 			System.out.print("");
 			System.out.print(node.atom.getContent());
-	}
+		}
 		else {
 			System.out.print("(");
 			printList(node.leftChild);

@@ -1,81 +1,140 @@
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Eval {
+	
+	private static String[] internalFuncList = {"CAR", "CDR", "CONS", "ATOM", "EQ", 
+			"NULL", "INT", "PLUS", "MINUS", "TIMES", "QUOTIENT", "REMAINDER", "LESS", 
+			"GREATER", "COND", "QUOTE", "DEFUN"};
+	private static Map<String, Node> dlist;
+	static {
+		dlist = new HashMap<String, Node>();
+	}
+	
+	private static Node add2DList(Node node) throws ListException {
+		String funcName = car(node).atom.getContent();
+		
+		// check if list size if correct
+		/*if(!nul(node.rightChild.rightChild.rightChild))
+			throw(new ListException("Function is wrongly defined!"));*/
+		
+		// check if funcName is valid
+		for(String f : internalFuncList) {
+			if(funcName.equals(f))
+				throw(new ListException("Function name " + funcName + " is reserved as internal functions!"));
+		}
+		
+		// check if E1 is a list
+		Parser.checkRootIsList(car(cdr(node)));
+		if(!car(cdr(node)).isList)
+			throw(new ListException("Expression E1 must be a list!"));
+		
+		// check if E1 includes T or NIL
+		Node arg = car(cdr(node));
+		while(arg.rightChild != null) {
+			if(nul(car(arg)) || isT(car(arg)) || isInt(car(arg)))
+				throw(new ListException("Expression E1 cannot contain T or NIL or INT!"));
+			arg = arg.rightChild;
+		}
+		
+		dlist.put(funcName, cdr(node));
+		System.out.println(funcName);
+		return null;
+	}
 
-	public static void evals(List<Node> rootList) throws ListException {
-		for(Node root : rootList) {
-			Node result = eval(root);
-			Printer.print(result);
-			System.out.println("");
+	/*private static void printMap(Map<String, Node> alist) {
+		if(alist == null)
+			return;
+		for (String k : alist.keySet()) {  
+			System.out.println("key  = " + k + ", value = " + alist.get(k).atom.getContent());;
+		} 
+	}*/
+	
+	private static boolean bound(String key, Map<String, Node> alist) {
+		for (String k : alist.keySet()) {  
+			if(k.equals(key))
+				return true;
+		} 
+		return false;
+	}
+	
+	private static Node getval(String key, Map<String, Node> alist) {
+		return alist.get(key);
+	}
+	
+	private static Node evcon(Node node, Map<String, Node> alist, Map<String, Node> dlist) throws ListException {
+		if(!nul(cdr(cdr(car(node)))))
+			throw(new ListException("COND with wrong args!"));
+		if(nul(node))
+			throw(new ListException("evcon fails!"));
+		if(isT(eval(car(car(node)), alist, dlist)))
+			return eval(car(cdr(car(node))), alist, dlist);
+		else
+			return evcon(cdr(node), alist, dlist);
+	}
+	
+	private static Node evlist(Node node, Map<String, Node> alist, Map<String, Node> dlist) throws ListException {
+		//System.out.println("evlist");
+		if(nul(node)) {
+			return node;
+		}
+		else {
+			return cons(eval(car(node), alist, dlist), evlist(cdr(node), alist, dlist));
 		}
 	}
 	
-	private static Node eval(Node root) throws ListException {
+	public static void evals(List<Node> rootList) throws ListException {
+		for(Node root : rootList) {
+			Map<String, Node> alist = new HashMap<String, Node>();
+			Node result = eval(root, alist, Eval.dlist);
+			if(result != null) {
+				Printer.print(result);
+				System.out.println("");
+			}
+		}
+	}
+	
+	private static Node eval(Node root, Map<String, Node> alist, Map<String, Node> dlist) throws ListException {
 		if(root.leftChild == null && root.rightChild == null) { // Exp is Atom
-			//System.out.println("exp is atom");
-			switch(root.atom.getContent()) {
-				case "T":
-					return root;
-					
-				case "NIL":
-					return root;
-					
-				default:
-					if(isInt(root)) {
-						return root;
-					} else {
-						throw(new ListException("No such atom!"));
-					}		
+			if(root.atom.getContent().equals("T")) {
+				return root;
+			} else if(root.atom.getContent().equals("NIL")) {
+				return root;
+			} else if(isInt(root)) {
+				return root;
+			} else if(bound(root.atom.getContent(), alist)) {
+				return getval(root.atom.getContent(), alist);
+			} else {
+				throw(new ListException("No such atom!"));
 			}
 		} else { // Exp is List
-			Node funcNameNode = car(root);		
-			
+			Node funcNameNode = car(root);	
 			if(funcNameNode.atom.getContent().equals("QUOTE")) {
 				if(!nul(cdr(cdr(root))))
 					throw(new ListException("QUOTE with wrong args!"));
 				return car(cdr(root));
 			}	
 			else if(funcNameNode.atom.getContent().equals("COND")) {
-				if(!nul(cdr(cdr(car(cdr(root))))))
-					throw(new ListException("COND with wrong args!"));
 				//special = true;
-				return evcon(cdr(root));
+				return evcon(cdr(root), alist, dlist);
+			}
+			else if (funcNameNode.atom.getContent().equals("DEFUN")) {
+				return add2DList(cdr(root));
 			} else {
-				Node argNode = evlist(cdr(root));
+				Node argNode = evlist(cdr(root), alist, dlist);
 				Parser.checkRootIsList(argNode); // Check if the argNode is list
 				if(!argNode.isList)
 					throw(new ListException("Not a list!"));
-				/*System.out.print("argNode = ");
-				Printer.print(argNode);
-				System.out.println("");*/
-				return apply(funcNameNode, argNode);
+				return apply(funcNameNode, argNode, alist, dlist);
 			}
 		}
 	}
-	
-	private static boolean isT(Node node) {
-		if(node.atom == null)
-			return false;
-		else {
-			if(node.atom.getContent().equals("T"))
-				return true;
-			else 
-				return false;
-		}
-	}
-	
-	private static Node evcon(Node node) throws ListException {
-		if(nul(node))
-			throw(new ListException("evcon fails!"));
-		if(isT(eval(car(car(node)))))
-			return eval(car(cdr(car(node))));
-		else
-			return evcon(cdr(node));
-	}
-	
-	private static Node apply(Node funcNameNode, Node paramNode) throws ListException {
+
+	private static Node apply(Node funcNameNode, Node paramNode, Map<String, Node> alist, Map<String, Node> dlist) throws ListException {
 		String funcName = funcNameNode.atom.getContent();
 		//System.out.println("apply " + funcName);
+	
 		switch(funcName) {
 
 			case "NULL":
@@ -116,7 +175,7 @@ public class Eval {
 			case "INT":
 				Node intNode1 = car(paramNode);
 				Node intNode2 = cdr(paramNode);
-				if(!nul(intNode2) || intNode1.atom == null)
+				if(!nul(intNode2))
 					throw(new ListException("INT with wrong args!"));
 				else {
 					Node n = new Node();
@@ -269,19 +328,56 @@ public class Eval {
 				}
 				
 			default:
-				throw(new ListException("No such Function!"));
+				Node func; // E1 and E2
+				if(bound(funcName, dlist)) {
+				    func = getval(funcName, dlist);
+				} else {
+					throw(new ListException("Undefined function " + funcName + "!"));
+				}
+				Map<String, Node> updated = addpairs(car(func), paramNode, alist);
+				return eval(car(cdr(func)), updated, dlist);
 		}
 	}
 	
-	private static Node evlist(Node node) throws ListException {
-		//System.out.println("evlist");
-		if(nul(node)) {
-			//System.out.println("Atom is Nil");
-			return node;
+	private static Map<String, Node> addpairs(Node formals, Node actuals, Map<String, Node> alist) throws ListException {
+		// check if the number of actuals is equivalent to that of formals
+		int formalNum = 0, actualNum = 0;
+		Node index = null;
+		index = formals;	
+		while(!nul(index)) {
+			formalNum ++;
+			index = cdr(index);
 		}
+		index = actuals;
+		while(!nul(index)) {
+			actualNum ++;
+			index = cdr(index);
+		}
+		if(formalNum != actualNum)
+			throw(new ListException("Different numbers of formals and actuals!"));
+		
+		// make a copy of alist
+		Map<String, Node> newalist = new HashMap<String, Node>();
+		newalist.putAll(alist);
+	
+		while(!nul(formals)) {
+			Node formal = car(formals);
+			Node actual = car(actuals);
+			newalist.put(formal.atom.getContent(), actual);
+			formals = cdr(formals);				
+			actuals = cdr(actuals);
+		}		
+		return newalist;
+	}
+	
+	private static boolean isT(Node node) {
+		if(node.atom == null)
+			return false;
 		else {
-			//System.out.println("evlist cons");
-			return cons(eval(car(node)), evlist(cdr(node)));
+			if(node.atom.getContent().equals("T"))
+				return true;
+			else 
+				return false;
 		}
 	}
 	
